@@ -1,0 +1,34 @@
+{
+    "bot_avatar_url":"https://images-ext-2.discordapp.net/external/Ct2WGFgoVda__vCnRsOqamclZcHXNKr6Zj4j99mhV6c/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/983858704015294564/6fe2a94c4bfb14805ae493c5a46b418d.png?width=670&height=670",
+    "bot_avatar_emoji":"<:bot_avatar:1063697620117233745>",
+    "main_title":"<:bot_avatar:1063697620117233745>彈力鯊鍋余頭",
+    "main_description":"哈囉douob，這裡是彈力鯊鍋余頭\n我使用的前綴符為`*`\n在help介面裡：\n`<>`為一定要填的參數\n`[]`為選填參數\n\n全新卡牌系統正在製作中！",
+    "nm01":"功能：\n`取得目前與機器人的延遲`\n\n格式：\n`*ping`",
+    "nm02":"功能：\n`取得使用者頭像`\n\n格式：\n`*getavatar [user]`",
+    "nm03":"功能：\n`查詢使用者資訊`\n\n格式：\n`*userinfo [user]`",
+    "nm04":"功能：\n`讓機器人說話`\n\n格式：\n`*sayd <message>`",
+    "nm05":"功能：\n`幫你做選擇`\n\n格式：\n`*pick <Option1> [Option2] [Option3]...`",
+    "nm06":"功能：\n`幫你找一個答案`\n\n格式：\n`*yon <Question>`",
+    "nm07":"功能：\n`幫你計算`\n\n格式：\n`*calc <算式>`",
+    "nm08":"功能：\n`為目前狀態為線上的成員分組`\n\n格式：\n`*random_squad <每隊人數> <隊伍數量>`",
+    "nm09":"功能：\n`為你發送一則較為醒目的訊息`\n\n格式：\n`*announcement <標題> <描述>`",
+    "nm10":"功能：\n`為你的訊息進行base64編碼`\n\n格式：\n`*base64encode <訊息>`",
+    "nm98":"功能：\n`嘿嘿嘿`\n\n格式：\n`*hentai`",
+    "nm99":"首席工程師：hesperus#7426\n\n技術支援：偷米、亞托莉的狗、指考尼豪",
+
+    "gm00":"功能：\n`查詢各遊戲的規則`\n\n格式：\n`開發中...`",
+    "gm01":"玩法：\n`2048，利用下方表情符號進行遊戲，🚫為提前結束遊戲`\n`注意：請等五個表情符號添加完畢後再開始遊戲，若是沒有反應，請多添加幾遍表情符號`\n\n格式：\n`*2048`",
+    "gm02":"玩法：\n`五子棋`\n\n格式：\n開始遊戲：\n`*chess`\n遊戲中：\n`<y座標> <x座標>`",
+    "gm03":"玩法：\n`終極密碼`\n\n格式：\n開始遊戲：\n`*guess`\n遊戲中：\n`<數字>`",
+    "gm04":"玩法：\n`OOXX，輸入數字代表格子`\n\n格式：\n開始遊戲：\n`*ooxx`\n遊戲中：\n`<數字>`",
+    "gm05":"玩法：\n`擲三顆骰子`\n\n格式：\n`*dice`",
+    "gm06":"玩法：\n`丟硬幣遊戲`\n\n格式：\n`*coin`",
+    "gm07":"玩法：\n`輸入數字，機器人會傳回nAmB，詳見規則`\n\n格式：\n`*ab`",
+    "gm10":"玩法：\n`待推出...`\n\n格式：\n``",
+
+    "EX01":"功能：\n`設定排程時間，以24小時制`\n\n格式：\n`*set_task_time <時分>`\n範例：`*set_time_task 2230`\n->將排程時間設定為22點30分",
+    "EX02":"功能：\n`設定排程執行頻道，需使用頻道id`\n\n格式：\n`*set_task_channel <channel_ID>`",
+    "EX03":"功能：\n`設定排程執行語句`\n\n格式：\n`*set_task_msg <message>`",
+    "EX04":"功能：\n`‧限定：擁有變更身分組權限的使用者`\n`‧此為斜線指令`\n`設定一則訊息，當使用者按下指定的表情符號時會給予其指定的身分組，取消指定的表情符號時會收回指定的身分組`\n\n格式：\n`/reaction_role <訊息內容> <身分組ID> <emoji>`"
+
+}
