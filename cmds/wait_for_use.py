@@ -20,5 +20,16 @@ class wait_for_use(Cog_Extension):
         await mes.remove_reaction(rea.emoji,user)
         print(rea.emoji)
                
+    @commands.command()
+    async def justtest(self,ctx):
+        s=""
+        for i in range(3):
+            for j in range(3):
+                s+='⬆️'
+            s+='\n'
+        await ctx.send(s,embed=discord.Embed(title="Test"))
+
+
+
 def setup(bot):
     bot.add_cog(wait_for_use(bot))

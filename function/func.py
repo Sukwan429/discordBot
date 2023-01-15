@@ -102,7 +102,7 @@ def is_zero(w:int,board,row):#判斷是否全部擠過去1右2左3上4下，不�
         return False
 ##############################################2048
 ##############################################OOXX
-def check_OOXX_win(ba): #檢查輸贏，false為贏
+def check_OOXX_win(ba,now): #檢查輸贏，false為贏
     if ba[0]==ba[1] and ba[1]==ba[2]:
         return False
     elif ba[3]==ba[4] and ba[4]==ba[5]:

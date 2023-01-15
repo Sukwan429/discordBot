@@ -36,37 +36,43 @@ class game(Cog_Extension):
         
     @commands.command()
     async def ooxx(self,ctx):
-        await ctx.send("OOXX，請輸入數字代表格子")
         search={1:":one:",2:":two:",3:":three:",4:":four:",5:":five:",6:":six:",7:":seven:",8:":eight:",9:":nine:",10:':o:',11:':x:'}
         board=[i for i in range(1,10)]
-
         already=set()#已經有放東西的index
         now_player=1 #1為O-1為X
-        while func.check_OOXX_win(board):
-            await ctx.send(func.draw(board))
+        now_fil=0
+        mes=await ctx.send(func.draw(board),embed=discord.Embed(title="OOXX，請輸入數字代表格子",color=discord.Colour.random()))
+        while func.check_OOXX_win(board,now_fil):
+            if now_fil==9:
+                await mes.edit(content=func.draw(board),embed=discord.Embed(title="平局",color=discord.Colour.random()))
+                return
+            await mes.edit(content=func.draw(board))
             user_in= await self.bot.wait_for('message')
             try:
                 num=int(user_in.content)-1
-
-                if now_player==1 and num<=9:
-                    board[num]=10
-                elif now_player==-1 and num<=9:
-                    board[num]=11
+                await ctx.channel.purge(limit=1)
             except:
-                while(ord(user_in.content)<49 or ord(user_in.content)>57):
-                    await ctx.send("輸入錯誤")
+                if str(user_in.content)=='break':
+                    await mes.edit(embed=discord.Embed(title="已提前結束",color=discord.Colour.random()))
+                    await ctx.channel.purge(limit=1)
+                    return
+                while(len(user_in.content)!=1 or ord(user_in.content)<49 or ord(user_in.content)>57):
+                    await ctx.channel.purge(limit=1)
+                    await mes.edit(embed=discord.Embed(title="輸入錯誤",color=discord.Colour.random()))
                     user_in= await self.bot.wait_for('message')
+                await ctx.channel.purge(limit=1)
+                await mes.edit(embed=discord.Embed(title="OOXX，請輸入數字代表格子",color=discord.Colour.random()))
                 num=int(user_in.content)-1
-                if now_player==1 and board[num]<=9:
-                    board[num]=10
-                elif now_player==-1 and board[num]<=9:
-                    board[num]=11
+            if now_player==1 and num<=9:
+                board[num]=10
+            elif now_player==-1 and num<=9:
+                board[num]=11
             now_player*=-1
+            now_fil+=1
         if now_player==-1:
-            await ctx.send("O方獲勝")
+            await mes.edit(content=func.draw(board),embed=discord.Embed(title="O方獲勝",color=discord.Colour.random()))
         elif now_player==1:
-            await ctx.send("X方獲勝")
-        await ctx.send(func.draw(board))
+            await mes.edit(content=func.draw(board),embed=discord.Embed(title="X方獲勝",color=discord.Colour.random()))
         
     @commands.command()
     async def guess(self,ctx):

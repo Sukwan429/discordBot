@@ -51,6 +51,7 @@ class main(Cog_Extension):     #繼承Cog_Extension
 
     @commands.command()
     async def announcement(self,ctx,tt,*,ds):
+        await ctx.message.delete()
         embed=discord.Embed(title=tt,description=ds,color=discord.Colour.random())
         await ctx.send(embed=embed)
 
