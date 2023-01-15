@@ -1,0 +1,9 @@
+# 讓Git忽略檔案或資料夾
+
+setting.json
+
+database/user/
+
+config.json
+
+pic/

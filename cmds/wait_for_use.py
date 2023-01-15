@@ -8,9 +8,6 @@ import function.func as func
 import time
 
 
-with open('setting.json',mode='r',encoding='utf8') as jfile:#r==read,utf8解碼
-    jdata = json.load(jfile)
-
     
 class wait_for_use(Cog_Extension):
     
