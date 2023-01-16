@@ -3,8 +3,9 @@ from discord.ext import commands
 from discord.commands import Option
 from discord.commands import slash_command
 from core.classes import Cog_Extension
+import datetime
 
-with open("config.json","r",encoding="utf-8") as file:
+with open("database/config.json","r",encoding="utf-8") as file:
     data = json.load(file)
 GUILD, ADMIN = data["guild"], data["admin"]
 
@@ -83,12 +84,11 @@ class modal_del_money(discord.ui.Modal):
 
 class money(Cog_Extension):
 
-
     @slash_command(description="查看用戶的錢錢")
     async def money(self,ctx,member:Option(discord.Member,"要查看的用戶",required=False)):
 
 
-        with open("config.json","r",encoding="utf-8") as file:
+        with open("database/config.json","r",encoding="utf-8") as file:
             data = json.load(file)
             admin = data["admin"]
         try:
@@ -103,7 +103,7 @@ class money(Cog_Extension):
         if not os.path.isfile(filepath):
             os.makedirs(path)
             with open(filepath,"w",encoding="utf-8") as file:
-                data = {"money":0}
+                data = {"money":0,"daily":"9999"}
                 json.dump(data,file)
         
         with open(filepath,"r",encoding="utf-8") as file: data = json.load(file)
@@ -112,5 +112,56 @@ class money(Cog_Extension):
             description=f"{member.mention}還有{money}元",color=discord.Colour.random())
         await ctx.respond(content=member.id,embed=embed, view=button_set())
         
+    @slash_command(description="每日簽到")
+    async def daily(self,ctx):
+        member=ctx.author
+        new_money=0
+        path=f"database/user/{member.id}"
+        filepath=f"{path}/money.json"
+        now_time=datetime.datetime.now().strftime('%m%d')
+        if not os.path.isfile(filepath):
+            os.makedirs(path)
+            with open(filepath,"w",encoding="utf-8") as file:
+                data = {"money":1000,"daily":now_time}
+                json.dump(data,file)
+        else:
+            with open(filepath,"r",encoding="utf-8") as file: data = json.load(file)
+            if data["daily"]==now_time:
+                await ctx.send("今天已領過，請等明天")
+                return
+            data["daily"] = now_time
+            data["money"]+=1000
+            new_money=data["money"]
+            with open(filepath,"w",encoding="utf-8") as file:
+                json.dump(data,file)
+        await ctx.send(embed=discord.Embed(title=f"{member}的錢包"
+                        ,description=f"{member.mention}還有{new_money}元",color=discord.Colour.random()))
+        
+    @commands.command()
+    async def daily(self,ctx):
+        member=ctx.author
+        new_money=0
+        path=f"database/user/{member.id}"
+        filepath=f"{path}/money.json"
+        now_time=datetime.datetime.now().strftime('%m%d')
+        if not os.path.isfile(filepath):
+            os.makedirs(path)
+            with open(filepath,"w",encoding="utf-8") as file:
+                data = {"money":1000,"daily":now_time}
+                json.dump(data,file)
+        else:
+            with open(filepath,"r",encoding="utf-8") as file: data = json.load(file)
+            if data["daily"]==now_time:
+                await ctx.send("今天已領過，請等明天")
+                return
+            data["daily"] = now_time
+            data["money"]+=1000
+            new_money=data["money"]
+            with open(filepath,"w",encoding="utf-8") as file:
+                json.dump(data,file)
+        await ctx.send(embed=discord.Embed(title=f"{member}的錢包"
+                        ,description=f"{member.mention}還有{new_money}元",color=discord.Colour.random()))
+
+
 def setup (bot):
     bot.add_cog(money(bot))

@@ -25,8 +25,18 @@ class task(Cog_Extension):
 
         self.bg_task=self.bot.loop.create_task(time_task()) #創建新的背景作業
         
-        
-        
+        async def statu():
+            await self.bot.wait_until_ready()
+            temp=0
+            while not self.bot.is_closed():
+                if temp%2==0:
+                    game = discord.Game(f"developed by hesperus")
+                else:
+                    game =discord.Game(f'*help')
+                await self.bot.change_presence(status=discord.Status.online, activity=game)
+                temp+=1
+                await asyncio.sleep(10)
+        self.statu_task=self.bot.loop.create_task(statu())
         
         
         """

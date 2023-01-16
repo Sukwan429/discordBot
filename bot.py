@@ -9,7 +9,7 @@ import random,os,asyncio,sys
 
 with open('setting.json',mode='r',encoding='utf8') as jfile:#r==read,utf8解碼
     jdata = json.load(jfile)
-with open("config.json", "r", encoding="UTF-8") as file:
+with open("database/config.json", "r", encoding="UTF-8") as file:
     config = json.load(file)
 
 intents = discord.Intents.all()
@@ -26,7 +26,7 @@ async def on_ready():
     else:
         game = discord.Game(F"developed by hesperus")
         await bot.change_presence(status=discord.Status.online, activity=game)
-        print(f">>{bot.user}上線<<")
+        print(f"哈囉，又見面了!")
 
 @bot.command()
 async def load(ctx,extension):
@@ -56,16 +56,16 @@ async def reaction_role(ctx,
     embed = discord.Embed(title="領取身分組", description=內容)
     message = await ctx.send(embed=embed)  # 傳送領取訊息
     await message.add_reaction(emoji)  # 加入第一個反應
-    with open("role.json", "r") as file:  # 用閱讀模式開啟資料儲存檔案
+    with open("database/role.json", "r") as file:  # 用閱讀模式開啟資料儲存檔案
         data = json.load(file)  # data = 資料裡的字典{}
-    with open("role.json", "w") as file:  # 用write模式開啟檔案
+    with open("database/role.json", "w") as file:  # 用write模式開啟檔案
         data[str(message.id)] = {"role": role.id, "emoji": emoji.id}  # 新增字典資料
         json.dump(data, file, indent=4)  # 上載新增後的資料
     await ctx.respond("設置完畢", delete_after=3)
 
 @bot.event
 async def on_raw_reaction_add(payload):  # 偵測到添加反應
-    with open("role.json", "r") as file:  # 用read模式開啟檔案
+    with open("database/role.json", "r") as file:  # 用read模式開啟檔案
         data = json.load(file)  # 讀取檔案內容
     if not str(payload.message_id) in data:  # 如果檔案裡沒有資料
         return  # 結束運行
@@ -81,7 +81,7 @@ async def on_raw_reaction_add(payload):  # 偵測到添加反應
 
 @bot.event
 async def on_raw_reaction_remove(payload):  # 偵測到添加反應
-    with open("role.json", "r") as file:  # 用read模式開啟檔案
+    with open("database/role.json", "r") as file:  # 用read模式開啟檔案
         data = json.load(file)  # 讀取檔案內容
     if not str(payload.message_id) in data:  # 如果檔案裡沒有資料
         return  # 結束運行
@@ -101,7 +101,8 @@ for filename in os.listdir('./cmds'):
     if filename.endswith('.py'):
         try:
             bot.load_extension(f'cmds.{filename[:-3]}')
+            print(f'✅   已加載 {filename}')
         except Exception as error:
-            print(f'❎{filename}發生錯誤 {error}')
+            print(f'❎   {filename} 發生錯誤  {error}')
 if __name__ == "__main__":
     bot.run(jdata['TOKEN'])

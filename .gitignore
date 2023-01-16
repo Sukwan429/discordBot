@@ -3,5 +3,5 @@
 setting.json
 .vscode/
 database/user/
-config.json
+database/config.json
 pic/
