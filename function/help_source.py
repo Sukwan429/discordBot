@@ -12,33 +12,48 @@ main_help_embed=discord.Embed(title=helptext["main_title"],description=helptext[
 main_help_embed.set_footer(text="彈力鯊鍋余頭")
 main_help_embed.set_thumbnail(url=helptext["bot_avatar_url"])
 
-nm={"1":discord.Embed(title="查詢ping值",description=helptext["nm01"],color = discord.Colour.random()),
-        "2":discord.Embed(title="取得使用者頭像",description=helptext["nm02"],color = discord.Colour.random()),
-        "3":discord.Embed(title="查詢使用者資料",description=helptext["nm03"],color = discord.Colour.random()),
-        "4":discord.Embed(title="讓機器人說話",description=helptext["nm04"],color = discord.Colour.random()),
-        "5":discord.Embed(title="隨機抽籤",description=helptext["nm05"],color=discord.Colour.random()),
-        "6":discord.Embed(title="幫你選一個答案",description=helptext["nm06"],color=discord.Colour.random()),
-        "7":discord.Embed(title="計算機",description=helptext["nm07"],color=discord.Colour.random()),
-        "8":discord.Embed(title="隨機組隊",description=helptext["nm08"],color=discord.Colour.random()),
-        "9":discord.Embed(title="大聲公",description=helptext["nm09"],color=discord.Colour.random()),
-        "10":discord.Embed(title="base64編碼",description=helptext["nm10"],color=discord.Colour.random()),
-        "98":discord.Embed(title="hentai",description=helptext["nm98"],color=discord.Colour.random()),
-        "99":discord.Embed(title="開發人員",description=helptext["nm99"],color=0xFFFF00)
+money_help_embed=discord.Embed(title=helptext["money_title"],description=helptext["money_description"],color=discord.Colour.random())
+money_help_embed.set_footer(text="彈力鯊鍋余頭")
+money_help_embed.set_thumbnail(url=helptext["bot_avatar_url"])
+
+game_embed=discord.Embed(title="遊戲",color=discord.Colour.random())
+nm_embed=discord.Embed(title="一般",color=discord.Colour.random())
+EX_embed=discord.Embed(title="特殊",color=discord.Colour.random())
+
+
+nm={"1":discord.Embed(title="查詢ping值",description=helptext["nm"]["01"],color = discord.Colour.random()),
+        "2":discord.Embed(title="取得使用者頭像",description=helptext["nm"]["02"],color = discord.Colour.random()),
+        "3":discord.Embed(title="查詢使用者資料",description=helptext["nm"]["03"],color = discord.Colour.random()),
+        "4":discord.Embed(title="讓機器人說話",description=helptext["nm"]["04"],color = discord.Colour.random()),
+        "5":discord.Embed(title="隨機抽籤",description=helptext["nm"]["05"],color=discord.Colour.random()),
+        "6":discord.Embed(title="幫你選一個答案",description=helptext["nm"]["06"],color=discord.Colour.random()),
+        "7":discord.Embed(title="計算機",description=helptext["nm"]["07"],color=discord.Colour.random()),
+        "8":discord.Embed(title="隨機組隊",description=helptext["nm"]["08"],color=discord.Colour.random()),
+        "9":discord.Embed(title="大聲公",description=helptext["nm"]["09"],color=discord.Colour.random()),
+        "10":discord.Embed(title="base64編碼",description=helptext["nm"]["10"],color=discord.Colour.random()),
+        "98":discord.Embed(title="hentai",description=helptext["nm"]["98"],color=discord.Colour.random()),
+        "99":discord.Embed(title="開發人員",description=helptext["nm"]["99"],color=0xFFFF00)
         }
-gm={"0":discord.Embed(title="查看規則",description=helptext["gm00"],color=discord.Colour.random()),
-    "1":discord.Embed(title="2048",description=helptext["gm01"],color=discord.Colour.random()),
-    "2":discord.Embed(title="五子棋",description=helptext["gm02"],color=discord.Colour.random()),
-    "3":discord.Embed(title="終極密碼",description=helptext["gm03"],color=discord.Colour.random()),
-    "4":discord.Embed(title="OOXX",description=helptext["gm04"],color=discord.Colour.random()),
-    "5":discord.Embed(title="擲骰子",description=helptext["gm05"],color=discord.Colour.random()),
-    "6":discord.Embed(title="猜正反",description=helptext["gm06"],color=discord.Colour.random()),
-    "7":discord.Embed(title="1A2B",description=helptext["gm07"],color=discord.Colour.random()),
-    "10":discord.Embed(title="金錢系統",description=helptext["gm10"],color=discord.Colour.random()),
+gm={"0":discord.Embed(title="查看規則",description=helptext["gm"]["00"],color=discord.Colour.random()),
+    "1":discord.Embed(title="2048",description=helptext["gm"]["01"],color=discord.Colour.random()),
+    "2":discord.Embed(title="五子棋",description=helptext["gm"]["02"],color=discord.Colour.random()),
+    "3":discord.Embed(title="終極密碼",description=helptext["gm"]["03"],color=discord.Colour.random()),
+    "4":discord.Embed(title="OOXX",description=helptext["gm"]["04"],color=discord.Colour.random()),
+    "5":discord.Embed(title="擲骰子",description=helptext["gm"]["05"],color=discord.Colour.random()),
+    "6":discord.Embed(title="猜正反",description=helptext["gm"]["06"],color=discord.Colour.random()),
+    "7":discord.Embed(title="1A2B",description=helptext["gm"]["07"],color=discord.Colour.random()),
+    "10":discord.Embed(title="金錢系統",description=helptext["gm"]["10"],color=discord.Colour.random()),
     }
-EX={"1":discord.Embed(title="設定排程時間",description=helptext["EX01"],color=discord.Colour.random()),
-    "2":discord.Embed(title="設定排程執行頻道",description=helptext["EX02"],color=discord.Colour.random()),
-    "3":discord.Embed(title="設定排程執行語句",description=helptext["EX03"],color=discord.Colour.random()),
-    "4":discord.Embed(title="設定身分組訊息",description=helptext["EX04"],color=discord.Colour.random()),
+money={"1":discord.Embed(title="查看錢包",description=helptext["money"]["00"],color=discord.Colour.random()),
+"2":discord.Embed(title="每日簽到",description=helptext["money"]["01"],color=discord.Colour.random()),
+"98":discord.Embed(title="設置金錢管理身分組",description=helptext["money"]["98"],color=discord.Colour.random()),
+"99":discord.Embed(title="移除金錢管理身分組",description=helptext["money"]["99"],color=discord.Colour.random())
+}
+
+EX={"1":discord.Embed(title="設定排程時間",description=helptext["EX"]["01"],color=discord.Colour.random()),
+    "2":discord.Embed(title="設定排程執行頻道",description=helptext["EX"]["02"],color=discord.Colour.random()),
+    "3":discord.Embed(title="設定排程執行語句",description=helptext["EX"]["03"],color=discord.Colour.random()),
+    "4":discord.Embed(title="設定身分組訊息",description=helptext["EX"]["04"],color=discord.Colour.random()),
     }
 
 for i in nm:
@@ -64,18 +79,14 @@ class Myselect(View):
     async def select_callback(self,select,interaction):
         select.disabled=True
         if select.values[0]=="1":
-            em=discord.Embed(title="一般",color=discord.Colour.random())
             no=normal()
-            await interaction.response.edit_message(embed=em,view=no)
-            
+            await interaction.response.edit_message(embed=nm_embed,view=no)     
         if select.values[0]=="2":
-            em=discord.Embed(title="遊戲",color=discord.Colour.random())
             no=game()
-            await interaction.response.edit_message(embed=em,view=no)
+            await interaction.response.edit_message(embed=game_embed,view=no)
         if select.values[0]=="3":
-            em=discord.Embed(title="特殊",color=discord.Colour.random())
             no=ex()
-            await interaction.response.edit_message(embed=em,view=no)
+            await interaction.response.edit_message(embed=EX_embed,view=no)
 class normal(View):
     @discord.ui.select(
         placeholder="點我",
@@ -124,6 +135,9 @@ class game(View):
         if select.values[0]=="100":
             view=Myselect()
             await interaction.response.edit_message(view=view,embed=main_help_embed)
+        elif select.values[0]=="10":
+            view=mon()
+            await interaction.response.edit_message(view=view,embed=money_help_embed)
         else:
             await interaction.response.edit_message(embed=gm[select.values[0]])
 class ex(View):
@@ -133,7 +147,7 @@ class ex(View):
             discord.SelectOption(label="設定排程時間",value="1"),
             discord.SelectOption(label="設定排程執行頻道",value="2"),
             discord.SelectOption(label="設定排程執行語句",value="3"),
-            discord.SelectOption(label="設定身分組訊息",value="4"),
+            discord.SelectOption(label="設定身分組訊息",description="僅限伺服器管理員",value="4"),
             discord.SelectOption(label="回上一頁",value="100")
             ]
     )
@@ -144,3 +158,22 @@ class ex(View):
             await interaction.response.edit_message(view=view,embed=main_help_embed)
         else:
             await interaction.response.edit_message(embed=EX[select.values[0]])
+
+class mon(View):
+    @discord.ui.select(
+        placeholder="點我",
+        options=[
+            discord.SelectOption(label="查看錢包",value="1"),
+            discord.SelectOption(label="每日簽到",value="2"),
+            discord.SelectOption(label="設置金錢管理身分組",description="僅限伺服器管理員",value="98"),
+            discord.SelectOption(label="移除金錢管理身分組",description="僅限伺服器管理員",value="99"),
+            discord.SelectOption(label="回上一頁",value="100")
+            ]
+    )
+    async def select_callback(self,select,interaction):
+        select.disabled=True
+        if select.values[0]=="100":
+            view=game()
+            await interaction.response.edit_message(view=view,embed=game_embed)
+        else:
+            await interaction.response.edit_message(embed=money[select.values[0]])

@@ -10,25 +10,7 @@ import time
 
     
 class wait_for_use(Cog_Extension):
-    
-    @commands.command()
-    async def ss(self,ctx):
-        mes=await ctx.send("aa")
-        await mes.add_reaction('⬆️')
-        await mes.edit(content="成功")
-        rea,user=await self.bot.wait_for("reaction_add")
-        await mes.remove_reaction(rea.emoji,user)
-        print(rea.emoji)
-               
-    @commands.command()
-    async def justtest(self,ctx):
-        s=""
-        for i in range(3):
-            for j in range(3):
-                s+='⬆️'
-            s+='\n'
-        await ctx.send(s,embed=discord.Embed(title="Test"))
-
+    pass
 
 
 def setup(bot):

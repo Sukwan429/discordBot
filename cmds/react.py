@@ -72,6 +72,24 @@ class react(Cog_Extension):
         await ctx.channel.purge(limit=1)
         await ctx.send(f"`{base64.b64encode(s.encode('UTF-8'))}`")
 
+    @commands.slash_command(description="設置反應身分組")
+    async def reaction_role(self,ctx,
+                        內容: Option(str, "嵌入訊息內容"),
+                        role: Option(discord.Role, "要領取的身分組"),
+                        emoji: Option(discord.PartialEmoji, "要添加的反應")):  # 斜線指令選項
+        await ctx.defer()  # 延遲回覆
+        if not ctx.author.guild_permissions.administrator:  # 如果使用者沒管理權限
+            await ctx.respond("只有管理員能使用此指令")
+            return  # 結束運行
+        embed = discord.Embed(title="領取身分組", description=內容)
+        message = await ctx.send(embed=embed)  # 傳送領取訊息
+        await message.add_reaction(emoji)  # 加入第一個反應
+        with open("database/role.json", "r") as file:  # 用閱讀模式開啟資料儲存檔案
+            data = json.load(file)  # data = 資料裡的字典{}
+        with open("database/role.json", "w") as file:  # 用write模式開啟檔案
+            data[str(message.id)] = {"role": role.id, "emoji": emoji.id}  # 新增字典資料
+            json.dump(data, file, indent=4)  # 上載新增後的資料
+        await ctx.respond("設置完畢", delete_after=3)
 
 
 def setup(bot):

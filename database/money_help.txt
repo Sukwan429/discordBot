@@ -2,3 +2,8 @@
 /help | 顯示此訊息
 /money | 查看,控制金錢
 /daily | 每日簽到，可獲得1000元
+
+
+
+*add_money_role | 新增金錢管理身分組
+*remove_money_role | 移除金錢管理身分組

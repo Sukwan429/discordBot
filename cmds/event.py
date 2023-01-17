@@ -29,6 +29,37 @@ class Event(Cog_Extension):
     async def on_command_error(self, ctx, err):
         print(err)
         await ctx.send(err)
+    @commands.Cog.listener()
+    async def on_raw_reaction_add(self,payload):  # 偵測到添加反應
+        with open("database/role.json", "r") as file:  # 用read模式開啟檔案
+            data = json.load(file)  # 讀取檔案內容
+        if not str(payload.message_id) in data:  # 如果檔案裡沒有資料
+            return  # 結束運行
+        if data[str(payload.message_id)]["emoji"] != payload.emoji.id:  # 判斷添加的反應是否是設置的反應
+            return  # 結束運行
+        guild = await self.bot.fetch_guild(payload.guild_id)  # 取得群組
+        role = guild.get_role(data[str(payload.message_id)]["role"])  # 取得身分組
+        await payload.member.add_roles(role, reason="反應身分組系統")  # 給予身份組
+        try:
+            await payload.member.send(F"已給予 {role}", delete_after=10)  # 私訊給予訊息
+        except:
+            pass
+    @commands.Cog.listener()
+    async def on_raw_reaction_remove(self,payload):  # 偵測到添加反應
+        with open("database/role.json", "r") as file:  # 用read模式開啟檔案
+            data = json.load(file)  # 讀取檔案內容
+        if not str(payload.message_id) in data:  # 如果檔案裡沒有資料
+            return  # 結束運行
+        if data[str(payload.message_id)]["emoji"] != payload.emoji.id:  # 判斷添加的反應是否是設置的反應
+            return  # 結束運行
+        guild = await self.bot.fetch_guild(payload.guild_id)  # 取得群組
+        role = guild.get_role(data[str(payload.message_id)]["role"])  # 取得身分組
+        member = await guild.fetch_member(payload.user_id)
+        await member.remove_roles(role, reason="反應身分組系統")  # 移除身分組
+        try:
+            await member.send(F"已移除 {role}", delete_after=10)  # 私訊給予訊息
+        except:
+            pass
 
         
 

@@ -7,11 +7,10 @@ import datetime
 
 with open("database/config.json","r",encoding="utf-8") as file:
     data = json.load(file)
-GUILD, ADMIN = data["guild"], data["admin"]
-
 class button_set(discord.ui.View):
     @discord.ui.button(label="給予該用戶錢錢",style=discord.ButtonStyle.green)
     async def add_button_callback(self, button, interaction):
+        ADMIN=data[str(interaction.guild_id)]
         if ADMIN in [role.id for role in interaction.user.roles]:
             await interaction.response.send_modal(modal_add_money(title="給予用戶錢錢"))
         else:
@@ -19,6 +18,7 @@ class button_set(discord.ui.View):
 
     @discord.ui.button(label="減少該用戶錢錢",style=discord.ButtonStyle.red)
     async def del_button_callback(self, button, interaction):
+        ADMIN=data[str(interaction.guild_id)]
         if ADMIN in [role.id for role in interaction.user.roles]:
             await interaction.response.send_modal(modal_del_money(title="減少用戶錢錢"))
         else:
@@ -27,9 +27,7 @@ class button_set(discord.ui.View):
 class modal_add_money(discord.ui.Modal):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-
         self.add_item(discord.ui.InputText(label="要給予的數量"))
-
     async def callback(self, interaction):
         message, member = self.children[0].value, interaction.message.content
         try:
@@ -86,11 +84,9 @@ class money(Cog_Extension):
 
     @slash_command(description="查看用戶的錢錢")
     async def money(self,ctx,member:Option(discord.Member,"要查看的用戶",required=False)):
-
-
         with open("database/config.json","r",encoding="utf-8") as file:
             data = json.load(file)
-            admin = data["admin"]
+            admin = data[str(ctx.guild.id)]
         try:
             ctx.guild.get_role(admin)
         except:
@@ -112,8 +108,8 @@ class money(Cog_Extension):
             description=f"{member.mention}還有{money}元",color=discord.Colour.random())
         await ctx.respond(content=member.id,embed=embed, view=button_set())
         
-    @slash_command(description="每日簽到")
-    async def daily(self,ctx):
+    @slash_command(name="daily",description="每日簽到")
+    async def slash_daily(self,ctx):
         member=ctx.author
         new_money=0
         path=f"database/user/{member.id}"
@@ -134,7 +130,7 @@ class money(Cog_Extension):
             new_money=data["money"]
             with open(filepath,"w",encoding="utf-8") as file:
                 json.dump(data,file)
-        await ctx.send(embed=discord.Embed(title=f"{member}的錢包"
+        await ctx.send(embed=discord.Embed(title=f"`{member}`的錢包"
                         ,description=f"{member.mention}還有{new_money}元",color=discord.Colour.random()))
         
     @commands.command()
@@ -159,8 +155,39 @@ class money(Cog_Extension):
             new_money=data["money"]
             with open(filepath,"w",encoding="utf-8") as file:
                 json.dump(data,file)
-        await ctx.send(embed=discord.Embed(title=f"{member}的錢包"
+        await ctx.send(embed=discord.Embed(title=f"`{member}`的錢包"
                         ,description=f"{member.mention}還有{new_money}元",color=discord.Colour.random()))
+
+    @commands.command()
+    async def add_money_role(self,ctx,role:discord.Role):
+        if not ctx.author.guild_permissions.administrator:  # 如果使用者沒管理權限
+            await ctx.send("只有管理員能使用此指令",delete_after=10)
+            return  # 結束運行
+        with open("database/config.json","r",encoding="utf-8") as file:
+            data = json.load(file)
+        if str(ctx.guild.id) in data.keys():
+            await ctx.send("一個伺服器只可有一個管理錢錢的身分組",delete_after=10)
+            return
+        data[str(ctx.guild.id)] = role.id
+        with open("database/config.json","w",encoding='utf-8') as file: 
+            json.dump(data,file)
+        await ctx.send(f"已成功將金錢管理身分組設為`{role.name}`")
+
+    @commands.command()
+    async def remove_money_role(self,ctx):
+        if not ctx.author.guild_permissions.administrator:  # 如果使用者沒管理權限
+            await ctx.send("只有管理員能使用此指令",delete_after=10)
+            return  # 結束運行
+        with open("database/config.json","r",encoding="utf-8") as file:
+            data = json.load(file)
+        if str(ctx.guild.id) not in data.keys():
+            await ctx.send("此伺服器尚未設置金錢管理身分組",delete_after=10)
+            return
+        data.pop(str(ctx.guild.id))
+        with open("database/config.json","w",encoding='utf-8') as file:
+            json.dump(data,file)
+        await ctx.send(f"已成功移除金錢管理身分組，需重新新增一個才能使用金錢系統喔~")
+
 
 
 def setup (bot):
