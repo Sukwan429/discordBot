@@ -6,3 +6,4 @@ database/user/
 database/config.json
 pic/
 role.json
+cmds/__pycache__/
