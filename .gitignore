@@ -7,3 +7,4 @@ database/config.json
 pic/
 role.json
 cmds/__pycache__/
+function/__pycache__/
