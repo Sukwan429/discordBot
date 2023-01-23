@@ -23,7 +23,7 @@ class task(Cog_Extension):
                     pass
                 await asyncio.sleep(5)    
 
-        self.bg_task=self.bot.loop.create_task(time_task()) #創建新的背景作業
+        self.bg_task=self.bot.loop.create_task(asyncio.run(time_task())) #創建新的背景作業
         
         async def statu():
             await self.bot.wait_until_ready()
@@ -36,7 +36,7 @@ class task(Cog_Extension):
                 await self.bot.change_presence(status=discord.Status.online, activity=game)
                 temp+=1
                 await asyncio.sleep(10)
-        self.statu_task=self.bot.loop.create_task(statu())
+        self.statu_task=self.bot.loop.create_task(asyncio.run(statu()))
         
         
         """
@@ -80,5 +80,5 @@ class task(Cog_Extension):
             json.dump(jdata,jfile,indent=4)
         await ctx.send("成功重設time_task訊息")
 
-def setup(bot):
-    bot.add_cog(task(bot))
+async def setup(bot):
+    await bot.add_cog(task(bot))

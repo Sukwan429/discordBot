@@ -45,5 +45,5 @@ class rule(Cog_Extension):
         view=game_rule()
         await ctx.send(view=view)
 
-def setup(bot):
-    bot.add_cog(rule(bot))
+async def setup(bot):
+    await bot.add_cog(rule(bot))

@@ -86,5 +86,5 @@ class chess(Cog_Extension):
             
 
 
-def setup(bot):
-    bot.add_cog(chess(bot))
+async def setup(bot):
+    await bot.add_cog(chess(bot))

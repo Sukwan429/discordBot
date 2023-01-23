@@ -92,5 +92,5 @@ class react(Cog_Extension):
         await ctx.respond("設置完畢", delete_after=3)
 
 
-def setup(bot):
-    bot.add_cog(react(bot))
+async def setup(bot):
+    await bot.add_cog(react(bot))

@@ -1,7 +1,6 @@
 import discord,json,os
 from discord.ext import commands
 from discord.commands import Option
-from discord.commands import slash_command
 from core.classes import Cog_Extension
 import datetime
 
@@ -190,5 +189,5 @@ class money(Cog_Extension):
 
 
 
-def setup (bot):
-    bot.add_cog(money(bot))
+async def setup (bot):
+    await bot.add_cog(money(bot))

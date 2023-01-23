@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from discord.commands import Option
 ##############################################2048
 loc2048={
     0:"<:blank:1063777142577573898>",
