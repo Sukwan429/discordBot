@@ -12,7 +12,7 @@ with open('setting.json',mode='r',encoding='utf8') as jfile:#r==read,utf8解碼
     jdata = json.load(jfile)
 
 intents = discord.Intents.all()
-bot = commands.Bot(help_command=None,command_prefix='*',intents = intents)
+bot = commands.Bot(help_command=None,command_prefix=commands.when_mentioned_or("*"),intents = intents)
 
 @bot.event
 async def on_ready():

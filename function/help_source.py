@@ -1,7 +1,6 @@
 
 import discord
 from discord.ext import commands
-from discord.ui import Select,View
 import asyncio,random
 from datetime import datetime
 import json 
@@ -66,30 +65,26 @@ for i in EX:
     EX[i].set_thumbnail(url=helptext["bot_avatar_url"])
     EX[i].set_footer(text=EX[i].title)
 
-
-class Myselect(View):
-    @discord.ui.select(
-        placeholder="點我",
+class select_main(discord.ui.Select):
+    def __init__(self):
         options=[
             discord.SelectOption(label="一般",value='1',description="一些查詢類型的指令"),
             discord.SelectOption(label="遊戲",value='2',description="一些小遊戲"),
             discord.SelectOption(label="特殊",value='3',description="關於設置的指令"),
             ]
-    )
-    async def select_callback(self,select,interaction):
-        select.disabled=True
-        if select.values[0]=="1":
+        super().__init__(placeholder="點我",min_values=1, max_values=1,options=options)
+    async def callback(self,interaction:discord.Interaction):
+        if self.values[0]=="1":
             no=normal()
             await interaction.response.edit_message(embed=nm_embed,view=no)     
-        if select.values[0]=="2":
+        if self.values[0]=="2":
             no=game()
             await interaction.response.edit_message(embed=game_embed,view=no)
-        if select.values[0]=="3":
+        if self.values[0]=="3":
             no=ex()
             await interaction.response.edit_message(embed=EX_embed,view=no)
-class normal(View):
-    @discord.ui.select(
-        placeholder="點我",
+class select_normal(discord.ui.Select):
+    def __init__(self):
         options=[
             discord.SelectOption(label="查詢ping值",value="1"),
             discord.SelectOption(label="取得使用者頭像",value="2"),
@@ -105,17 +100,16 @@ class normal(View):
             discord.SelectOption(label="開發人員",value="99"),
             discord.SelectOption(label="回上一頁",value="100") 
             ]
-    )
-    async def select_callback(self,select,interaction):
-        if select.values[0]=="100":
+        super().__init__(placeholder="點我",min_values=1, max_values=1,options=options)
+    async def callback(self,interaction:discord.Interaction):
+        if self.values[0]=="100":
             view=Myselect()
             await interaction.response.edit_message(view=view,embed=main_help_embed)
         else:
-            await interaction.response.edit_message(embed=nm[select.values[0]])
+            await interaction.response.edit_message(embed=nm[self.values[0]])
 
-class game(View):
-    @discord.ui.select(
-        placeholder="點我",
+class select_game(discord.ui.Select):
+    def __init__(self):
         options=[
             discord.SelectOption(label="查看規則",value="0"),
             discord.SelectOption(label="2048",value="1"),
@@ -129,20 +123,19 @@ class game(View):
             discord.SelectOption(label="待推出......",value="99"),
             discord.SelectOption(label="回上一頁",value="100")
             ]
-    )
-    async def select_callback(self,select,interaction):
-        select.disabled=True
-        if select.values[0]=="100":
+        super().__init__(placeholder="點我",min_values=1, max_values=1,options=options)
+
+    async def callback(self,interaction:discord.Interaction):
+        if self.values[0]=="100":
             view=Myselect()
             await interaction.response.edit_message(view=view,embed=main_help_embed)
-        elif select.values[0]=="10":
+        elif self.values[0]=="10":
             view=mon()
             await interaction.response.edit_message(view=view,embed=money_help_embed)
         else:
-            await interaction.response.edit_message(embed=gm[select.values[0]])
-class ex(View):
-    @discord.ui.select(
-        placeholder="點我",
+            await interaction.response.edit_message(embed=gm[self.values[0]])
+class select_ex(discord.ui.Select):
+    def __init__(self):
         options=[
             discord.SelectOption(label="設定排程時間",value="1"),
             discord.SelectOption(label="設定排程執行頻道",value="2"),
@@ -150,18 +143,17 @@ class ex(View):
             discord.SelectOption(label="設定身分組訊息",description="僅限伺服器管理員",value="4"),
             discord.SelectOption(label="回上一頁",value="100")
             ]
-    )
-    async def select_callback(self,select,interaction):
-        select.disabled=True
-        if select.values[0]=="100":
+        super().__init__(placeholder="點我",min_values=1, max_values=1,options=options)
+    async def callback(self,interaction:discord.Interaction):
+    
+        if self.values[0]=="100":
             view=Myselect()
             await interaction.response.edit_message(view=view,embed=main_help_embed)
         else:
-            await interaction.response.edit_message(embed=EX[select.values[0]])
+            await interaction.response.edit_message(embed=EX[self.values[0]])
 
-class mon(View):
-    @discord.ui.select(
-        placeholder="點我",
+class select_mon(discord.ui.Select):
+    def __init__(self):
         options=[
             discord.SelectOption(label="查看錢包",value="1"),
             discord.SelectOption(label="每日簽到",value="2"),
@@ -169,11 +161,39 @@ class mon(View):
             discord.SelectOption(label="移除金錢管理身分組",description="僅限伺服器管理員",value="99"),
             discord.SelectOption(label="回上一頁",value="100")
             ]
-    )
-    async def select_callback(self,select,interaction):
-        select.disabled=True
-        if select.values[0]=="100":
+        super().__init__(placeholder="點我",min_values=1, max_values=1,options=options)
+
+    async def callback(self,interaction:discord.Interaction):
+    
+        if self.values[0]=="100":
             view=game()
             await interaction.response.edit_message(view=view,embed=game_embed)
         else:
-            await interaction.response.edit_message(embed=money[select.values[0]])
+            await interaction.response.edit_message(embed=money[self.values[0]])
+
+class Myselect(discord.ui.View):
+    def __init__(self,*,timeout=30):
+        super().__init__(timeout=timeout)
+        self.add_item(select_main())
+
+class normal(discord.ui.View):
+    def __init__(self,*,timeout=30):
+        super().__init__(timeout=timeout)
+        self.add_item(select_normal())
+
+class game(discord.ui.View):
+    def __init__(self,*,timeout=30):
+        super().__init__(timeout=timeout)
+        self.add_item(select_game())
+
+class ex(discord.ui.View):
+    def __init__(self,*,timeout=30):
+        super().__init__(timeout=timeout)
+        self.add_item(select_ex())
+
+class mon(discord.ui.View):
+    def __init__(self,*,timeout=30):
+        super().__init__(timeout=timeout)
+        self.add_item(select_mon())
+
+        
