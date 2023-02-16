@@ -1,29 +1,26 @@
 import discord,json,os
 from discord.ext import commands
-from discord.commands import Option
 from core.classes import Cog_Extension
 import datetime
 
 with open("database/config.json","r",encoding="utf-8") as file:
     data = json.load(file)
 class button_set(discord.ui.View):
-    @discord.ui.button(label="給予該用戶錢錢",style=discord.ButtonStyle.green)
-    async def add_button_callback(self, button, interaction):
-        ADMIN=data[str(interaction.guild_id)]
-        if ADMIN in [role.id for role in interaction.user.roles]:
-            await interaction.response.send_modal(modal_add_money(title="給予用戶錢錢"))
-        else:
-            await interaction.response.send_message(f"只有<@&{ADMIN}>可以控制錢錢!",ephemeral=True)
+    def __init__(self):
+        super().__init__(timeout=None)
+    @discord.ui.button(label="給予用戶錢錢",style=discord.ButtonStyle.green)
+    async def add(self,interaction:discord.Interaction,button:discord.ui.Button):
+        pass
 
-    @discord.ui.button(label="減少該用戶錢錢",style=discord.ButtonStyle.red)
-    async def del_button_callback(self, button, interaction):
-        ADMIN=data[str(interaction.guild_id)]
-        if ADMIN in [role.id for role in interaction.user.roles]:
-            await interaction.response.send_modal(modal_del_money(title="減少用戶錢錢"))
-        else:
-            await interaction.response.send_message(f"只有<@&{ADMIN}>可以控制錢錢!",ephemeral=True)
+    @discord.ui.buttion(label="減少用戶錢錢",style=discord.ButtonStyle.red)
+    async def sub(self,interaction:discord.Interaction,button:discord.ui.Button):
+        pass
+class add_money(discord.ui.Modal, title='增加用戶的錢錢'):
+    resp = discord.ui.TextInput(label='金額', style=discord.TextStyle.short)
 
-class modal_add_money(discord.ui.Modal):
+    async def on_submit(self, interaction: discord.Interaction):
+        pass
+class modal_add_money(discord.ui.Modal,title="給予用戶錢錢"):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.add_item(discord.ui.InputText(label="要給予的數量"))
@@ -81,8 +78,10 @@ class modal_del_money(discord.ui.Modal):
 
 class money(Cog_Extension):
 
-    @slash_command(description="查看用戶的錢錢")
-    async def money(self,ctx,member:Option(discord.Member,"要查看的用戶",required=False)):
+    @commands.hybrid_command(name="money",description="查看使用者的錢錢")
+    async def money(self,ctx,member:discord.Member=None):
+        if member is None:
+            member=ctx.author
         with open("database/config.json","r",encoding="utf-8") as file:
             data = json.load(file)
             admin = data[str(ctx.guild.id)]
@@ -91,8 +90,6 @@ class money(Cog_Extension):
         except:
             await ctx.respond(F"找不到身分組 `{admin}`")
             return
-
-        member = member or ctx.author
         path = F"database/user/{member.id}"
         filepath = F"{path}/money.json"
         if not os.path.isfile(filepath):
@@ -105,34 +102,10 @@ class money(Cog_Extension):
         money = data["money"]
         embed=discord.Embed(title=f"`{member}` 的錢包",
             description=f"{member.mention}還有{money}元",color=discord.Colour.random())
-        await ctx.respond(content=member.id,embed=embed, view=button_set())
+        await ctx.send(content=member.id,embed=embed, view=button_set())
         
-    @slash_command(name="daily",description="每日簽到")
-    async def slash_daily(self,ctx):
-        member=ctx.author
-        new_money=0
-        path=f"database/user/{member.id}"
-        filepath=f"{path}/money.json"
-        now_time=datetime.datetime.now().strftime('%m%d')
-        if not os.path.isfile(filepath):
-            os.makedirs(path)
-            with open(filepath,"w",encoding="utf-8") as file:
-                data = {"money":1000,"daily":now_time}
-                json.dump(data,file)
-        else:
-            with open(filepath,"r",encoding="utf-8") as file: data = json.load(file)
-            if data["daily"]==now_time:
-                await ctx.send("今天已領過，請等明天")
-                return
-            data["daily"] = now_time
-            data["money"]+=1000
-            new_money=data["money"]
-            with open(filepath,"w",encoding="utf-8") as file:
-                json.dump(data,file)
-        await ctx.send(embed=discord.Embed(title=f"`{member}`的錢包"
-                        ,description=f"{member.mention}還有{new_money}元",color=discord.Colour.random()))
         
-    @commands.command()
+    @commands.hybrid_command(name="daily",description="每日簽到")
     async def daily(self,ctx):
         member=ctx.author
         new_money=0

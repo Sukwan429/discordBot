@@ -40,7 +40,7 @@ class game_rule(View):
         self.add_item(select_game_rule())
 
 class rule(Cog_Extension):
-    @commands.command()
+    @commands.hybrid_command(name="gamerule")
     async def gamerule(self,ctx):
         view=game_rule()
         await ctx.send(view=view)
