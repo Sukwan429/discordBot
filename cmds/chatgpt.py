@@ -3,17 +3,22 @@ import discord
 import numpy as np
 from discord.ext import commands
 from core.classes import Cog_Extension
+import json
 
-openai.api_key = "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"
+with open('setting.json',mode='r',encoding='utf8') as jfile:#r==read,utf8解碼
+    jdata = json.load(jfile)
+
+
+openai.api_key = jdata["chatgpt_key"]  #你自己的ChatGPT API key
 messages = [
         {"role": "system", "content": "You are a helpful assistant."},
 ]
 class chatgpt(Cog_Extension):
     @commands.command()
-    async def chat(self,ctx,qu):
+    async def chat(self,ctx):
         def check(number):
             return number.author == ctx.author and number.channel == ctx.message.channel
-        message = qu
+        message = "Hello"
         while True:
             if message=="end":
                 return 
