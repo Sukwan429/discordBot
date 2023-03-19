@@ -18,11 +18,13 @@ class chatgpt(Cog_Extension):
     async def chat(self,ctx):
         def check(number):
             return number.author == ctx.author and number.channel == ctx.message.channel
-        message = "Hello"
+        message = "哈囉"
         while True:
             if message=="end":
                 return 
-            if message:
+            elif message[0]=="*":
+                continue
+            elif message:
                 messages.append(
                         {"role": "user", "content": message},
                 )
