@@ -19,9 +19,8 @@ for i  in gm:
     gm[i].set_thumbnail(url=GData["bot_avatar_url"])
     gm[i].set_footer(text=gm[i].title)
 
-class game_rule(View):
-    @discord.ui.select(
-        placeholder="點我以查看遊戲規則",
+class select_game_rule(Select):
+    def __init__(self):
         options=[
             discord.SelectOption(label="2048",value="1"),
             discord.SelectOption(label="五子棋",value="2"),
@@ -30,20 +29,21 @@ class game_rule(View):
             discord.SelectOption(label="1A2B",value="5"),
             discord.SelectOption(label="金錢系統",value="10"),
             ]
-    )
-    async def select_callback(self,select,interaction):
-        select.disabled=True
-        await interaction.response.edit_message(embed=gm[select.values[0]])
+        super().__init__(placeholder="點我",options=options)
+
+    async def callback(self,interaction:discord.Interaction):
+        await interaction.response.edit_message(embed=gm[self.values[0]])
+    
+class game_rule(View):
+    def __init__(self,*,timeout=30):
+        super().__init__(timeout=timeout)
+        self.add_item(select_game_rule())
+
 class rule(Cog_Extension):
-    @commands.command()
+    @commands.hybrid_command(name="gamerule")
     async def gamerule(self,ctx):
         view=game_rule()
         await ctx.send(view=view)
         
-    @commands.slash_command(name="gamerule",description="遊戲規則~")
-    async def slash_gamerule(self,ctx):
-        view=game_rule()
-        await ctx.send(view=view)
-
-def setup(bot):
-    bot.add_cog(rule(bot))
+async def setup(bot):
+    await bot.add_cog(rule(bot))

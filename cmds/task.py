@@ -2,55 +2,33 @@ import discord
 from discord.ext import commands
 from core.classes import Cog_Extension
 import json,asyncio,datetime
+import requests
 
 class task(Cog_Extension):
     def __init__(self,*args,**kwargs):            #init-->case初始化設定
         super().__init__(*args,**kwargs)          #super()-->父類別(Cog_Extension)(繼承概念)
-        self.counter=0
+    
+    async def setup_hook(self) -> None:
+        self.bot.bg_task=self.bot.loop.create_task(self.channel_task())
+    
+    async def on_ready(self):
+        print("Online")
 
-        async def time_task():
-            await self.bot.wait_until_ready()
-            while not self.bot.is_closed():
-                now_time=datetime.datetime.now().strftime('%H%M')
-                with open('setting.json','r',encoding='utf8') as jfile:
-                    jdata=json.load(jfile)
-                channel = self.bot.get_channel(int(jdata['time_task_channel']))
-                if now_time==jdata['time']:
-                    await channel.send(jdata["task_send_msg"])
-                    self.counter=1
-                else:
-                    self.counter=0
-                    pass
-                await asyncio.sleep(5)    
+    async def channel_task(self):
+        await self.bot.wait_until_ready()
+        with open("setting.json","r") as f:
+            time=f["time"]
+            msg=f["time_task_msg"]
+            channel=self.bot.get_channel(f["time_task_channel"])
+        while not self.bot.is_closed():
+            await channel.send(msg)
+            await asyncio.sleep(10)
 
-        self.bg_task=self.bot.loop.create_task(time_task()) #創建新的背景作業
-        
-        async def statu():
-            await self.bot.wait_until_ready()
-            temp=0
-            while not self.bot.is_closed():
-                if temp%2==0:
-                    game = discord.Game(f"developed by hesperus")
-                else:
-                    game =discord.Game(f'*help')
-                await self.bot.change_presence(status=discord.Status.online, activity=game)
-                temp+=1
-                await asyncio.sleep(10)
-        self.statu_task=self.bot.loop.create_task(statu())
-        
-        
-        """
-        async def interval():
-            await self.bot.wait_until_ready()
-            self.channel=self.bot.get_channel(985226238509613098)
-            while not self.bot.is_closed():
-                await self.channel.send("Hi I'm running!")
-                await asyncio.sleep(600) #單位：秒
-
-        self.bg_task=self.bot.loop.create_task(interval()) #創建新的背景作業
-        """
     
     
+
+    
+class task_command(Cog_Extension):
     @commands.command()
     async def set_task_channel(self,ctx,ch):
         with open('setting.json','r',encoding='utf8') as jfile:
@@ -80,5 +58,5 @@ class task(Cog_Extension):
             json.dump(jdata,jfile,indent=4)
         await ctx.send("成功重設time_task訊息")
 
-def setup(bot):
-    bot.add_cog(task(bot))
+async def setup(bot):
+    await bot.add_cog(task(bot))

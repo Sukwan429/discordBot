@@ -92,5 +92,5 @@ class main(Cog_Extension):     #繼承Cog_Extension
         await ctx.send('Cpp')
     """
 
-def setup(bot):
-    bot.add_cog(main(bot))
+async def setup(bot):
+    await bot.add_cog(main(bot))

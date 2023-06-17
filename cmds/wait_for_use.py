@@ -13,5 +13,5 @@ class wait_for_use(Cog_Extension):
     pass
 
 
-def setup(bot):
-    bot.add_cog(wait_for_use(bot))
+async def setup(bot):
+    await bot.add_cog(wait_for_use(bot))

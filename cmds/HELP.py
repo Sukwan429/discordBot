@@ -8,17 +8,12 @@ import function.help_source as help_source
 
 
 class HELP(Cog_Extension):
-    @commands.slash_command(name="help",description="查看彈力鯊鍋余頭的指令列表")
-    async def slash_help(self,ctx):
-        view=help_source.Myselect()
-        await ctx.send(embed=help_source.main_help_embed,view=view)
-    @commands.command()
-    async def help(self,ctx):
-        view=help_source.Myselect()
-        await ctx.send(embed=help_source.main_help_embed,view=view)
         
+    @commands.hybrid_command(name="help")
+    async def help_command(self, ctx: commands.Context) -> None:
+        view=help_source.Myselect()
+        await ctx.send(embed=help_source.main_help_embed,view=view)
 
 
-
-def setup(bot):
-    bot.add_cog(HELP(bot))    
+async def setup(bot):
+    await bot.add_cog(HELP(bot))    

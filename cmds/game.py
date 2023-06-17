@@ -152,5 +152,5 @@ class game(Cog_Extension):
 
 
 
-def setup(bot):
-    bot.add_cog(game(bot))
+async def setup(bot):
+    await bot.add_cog(game(bot))

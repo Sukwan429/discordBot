@@ -72,12 +72,18 @@ class react(Cog_Extension):
         await ctx.channel.purge(limit=1)
         await ctx.send(f"`{base64.b64encode(s.encode('UTF-8'))}`")
 
-    @commands.slash_command(description="設置反應身分組")
+    @commands.hybrid_command(name="reaction_role")
     async def reaction_role(self,ctx,
-                        內容: Option(str, "嵌入訊息內容"),
-                        role: Option(discord.Role, "要領取的身分組"),
-                        emoji: Option(discord.PartialEmoji, "要添加的反應")):  # 斜線指令選項
+                        內容: str=None,
+                        role: discord.Role=None,
+                        emoji: discord.PartialEmoji=None):  # 斜線指令選項
         await ctx.defer()  # 延遲回覆
+        if emoji is None:
+            await ctx.send("必須指定表情符號")
+            return
+        if role is None:
+            await ctx.send("必須指定身分組")
+            return
         if not ctx.author.guild_permissions.administrator:  # 如果使用者沒管理權限
             await ctx.respond("只有管理員能使用此指令")
             return  # 結束運行
@@ -92,5 +98,5 @@ class react(Cog_Extension):
         await ctx.respond("設置完畢", delete_after=3)
 
 
-def setup(bot):
-    bot.add_cog(react(bot))
+async def setup(bot):
+    await bot.add_cog(react(bot))
