@@ -4,6 +4,7 @@ import random
 from discord.ui import Select ,View
 from datetime import datetime
 from core.classes import Cog_Extension
+import json
 import function.func as func
 #TODO menuSelect
 
@@ -50,9 +51,12 @@ class main(Cog_Extension):     #繼承Cog_Extension
         await ctx.send(member.avatar)
 
     @commands.command()
-    async def announcement(self,ctx,tt,*,ds):
+    async def announcement(self,ctx,tt,key:str):
+        with open("D:/Coding/xampp/htdocs/accouncement.json","r") as file:
+            data=json.load(file)
+        
         await ctx.message.delete()
-        embed=discord.Embed(title=tt,description=ds,color=discord.Colour.random())
+        embed=discord.Embed(title=tt,description=data[key],color=discord.Colour.random())
         await ctx.send(embed=embed)
 
     @commands.command(alieases=["whois","ui"])

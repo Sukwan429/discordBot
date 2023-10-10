@@ -44,6 +44,8 @@ async def load():
                 print(f'✅   已加載 {filename}')
             except Exception as error:
                 print(f'❎   {filename} 發生錯誤  {error}')
+
+
 async def bot_run():
     await load()
     await bot.start(jdata['TOKEN'])
